@@ -1,0 +1,32 @@
+<% layout('layouts/boilerplate') %>
+
+    <h2>
+        <%= foundCamp.title %>
+    </h2>
+    It's located in: <strong>
+        <%= foundCamp.location %>
+    </strong>
+    <img src="<%= foundCamp.image %> " alt="">
+    <p>Description: <%= foundCamp.description %>
+    </p>
+    <p>Price: €<%= foundCamp.price %>/night
+    </p>
+
+
+    <hr>
+    <p>To go back to index page, click this <a href="/campgrounds"><button>Index</button></a></p>
+
+    <p>
+        If you wanna create a campground, click this link
+        <a href="/campgrounds/new"><i>Add New Campground</i></a>
+    </p>
+    <p>
+        To edit current campground, click this link.
+        <a href="/campgrounds/<%= foundCamp._id %>/edit"><i>Edit Campground!</i></a>
+    </p>
+    <hr>
+    <p>To delete this campground click this link
+    <form action="/campgrounds/<%=foundCamp._id%>?_method=DELETE" method="POST">
+        <button>Delete!</button>
+    </form>
+    </p>

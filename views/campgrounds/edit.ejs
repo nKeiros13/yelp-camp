@@ -1,0 +1,22 @@
+<% layout('layouts/boilerplate') %>
+
+    <h2>Edit campground <%=editCamp.title%>
+    </h2>
+    <form action="/campgrounds/<%=editCamp._id%>?_method=PATCH" method="POST">
+        <div>
+            <label for="title">Title: </label>
+            <input type="text" name="campground[title]" id="title" value="<%=editCamp.title%> "> <br>
+            <label for="price">Price: €</label>
+            <input type="number" name="campground[price]" id="price" value="<%= editCamp.price %> "> <br>
+        </div>
+        <div>
+            <label for="description">Description: </label>
+            <textarea name="campground[description]" id="description" cols="30"
+                rows="5"><%= editCamp.description %> </textarea>
+            <br>
+            <label for="location">Location: </label>
+            <input type="text" name="campground[location]" id="location" value="<%=editCamp.location%> "> <br>
+        </div>
+        <button>Edit Campground</button>
+    </form>
+    <a href="/campgrounds"><button>Index</button></a>
