@@ -1,22 +1,45 @@
 <% layout('layouts/boilerplate') %>
 
-    <h2>Edit campground <%=editCamp.title%>
-    </h2>
-    <form action="/campgrounds/<%=editCamp._id%>?_method=PATCH" method="POST">
-        <div>
-            <label for="title">Title: </label>
-            <input type="text" name="campground[title]" id="title" value="<%=editCamp.title%> "> <br>
-            <label for="price">Price: €</label>
-            <input type="number" name="campground[price]" id="price" value="<%= editCamp.price %> "> <br>
+    <div class="row">
+        <h1 class="text-center">Create your own campground!</h1>
+        <div class="col-6 offset-3">
+            <div class="mb-3">
+                <form action="/campgrounds/<%=editCamp._id%>?_method=PATCH" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label" for="title">Title: </label>
+                        <input class="form-control" type="text" name="campground[title]" value="<%=editCamp.title%>"
+                            id="title">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="price">Price: </label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="price-label">€</span>
+                            <input type="number" class="form-control" name="campground[price]" placeholder="0.00"
+                                value="<%= editCamp.price %>" aria-label="price" aria-describedby="price-label">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Image URL: </label>
+                        <input class="form-control" type="text" name="campground[image]" id="image"
+                            value="<%= editCamp.image %>">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="description">Description: </label>
+                        <textarea class="form-control" name="campground[description]" id="description" cols="30"
+                            rows="5"><%= editCamp.description %> </textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="location">Location: </label>
+                        <input class="form-control" type="text" name="campground[location]"
+                            value="<%= editCamp.location %>" id="location">
+                    </div>
+                    <button class="btn btn-info">Save Changes</button>
+                </form>
+            </div>
+            <div class="mb-3">
+                <a href="/campgrounds/<%= editCamp._id %>"><button class="btn btn-secondary">Back to <%= editCamp.title
+                            %> </button></a>
+            </div>
         </div>
-        <div>
-            <label for="description">Description: </label>
-            <textarea name="campground[description]" id="description" cols="30"
-                rows="5"><%= editCamp.description %> </textarea>
-            <br>
-            <label for="location">Location: </label>
-            <input type="text" name="campground[location]" id="location" value="<%=editCamp.location%> "> <br>
-        </div>
-        <button>Edit Campground</button>
-    </form>
-    <a href="/campgrounds"><button>Index</button></a>
+    </div>

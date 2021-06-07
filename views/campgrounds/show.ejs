@@ -1,32 +1,29 @@
 <% layout('layouts/boilerplate') %>
 
-    <h2>
-        <%= foundCamp.title %>
-    </h2>
-    It's located in: <strong>
-        <%= foundCamp.location %>
-    </strong>
-    <img src="<%= foundCamp.image %> " alt="">
-    <p>Description: <%= foundCamp.description %>
-    </p>
-    <p>Price: €<%= foundCamp.price %>/night
-    </p>
-
-
-    <hr>
-    <p>To go back to index page, click this <a href="/campgrounds"><button>Index</button></a></p>
-
-    <p>
-        If you wanna create a campground, click this link
-        <a href="/campgrounds/new"><i>Add New Campground</i></a>
-    </p>
-    <p>
-        To edit current campground, click this link.
-        <a href="/campgrounds/<%= foundCamp._id %>/edit"><i>Edit Campground!</i></a>
-    </p>
-    <hr>
-    <p>To delete this campground click this link
-    <form action="/campgrounds/<%=foundCamp._id%>?_method=DELETE" method="POST">
-        <button>Delete!</button>
-    </form>
-    </p>
+    <div class="row mb-3">
+        <div class="col-6 offset-3">
+            <div class="card">
+                <img src="<%= foundCamp.image %>" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%= foundCamp.title %>
+                    </h5>
+                    <p class="card-text">
+                        <%= foundCamp.description %>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-muted">It's located in: <strong>
+                            <%= foundCamp.location %>
+                    </li>
+                    <li class="list-group-item">Price: €<%= foundCamp.price %>/night</li>
+                </ul>
+                <div class="card-body">
+                    <a href="/campgrounds/<%= foundCamp._id %>/edit" class="card-link btn btn-info">Edit Campground</a>
+                    <form class="d-inline" action="/campgrounds/<%=foundCamp._id%>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger">Delete!</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
