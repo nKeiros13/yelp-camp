@@ -1,11 +1,11 @@
 # yelp-camp
 This contains the Basic CRUD functionality and basic styles for the website. <br>
-1.The site is currently in development phase and cannot be viewed live. <br>
-2.To replicate the above site, fork the repository, clone it in your desktop. <br>
-3.Install all the dependencies in the pakage.JSON file. <br>
-4.Start the Mongodemon shell and Gitbash. Use command 'node seeds/index.js' to seed the database <br>
-5.Start the server with 'nodemon index.js' command in GitBash (You need to have node and express installed and have the mongodemon running)  <br>
-6.Go to web browser and open http://localhost:3000 to view the home page of 'yelp-camp'
+The site is currently in development phase and cannot be viewed live. <br>
+1.To replicate the above site, fork the repository, clone it in your desktop. <br>
+2.Install all the dependencies in the pakage.JSON file. <br>
+3.Start the Mongodemon shell and Gitbash. Use command 'node seeds/index.js' to seed the database <br>
+4.Start the server with 'nodemon index.js' command in GitBash (You need to have node and express installed and have the mongodemon running)  <br>
+5.Go to web browser and open http://localhost:3000 to view the home page of 'yelp-camp'
 
 I'm uploading some images to  show it how my website looks as of right now(9/6/21)
 <img src="images/image-1.png" width="500"><br>
