@@ -9,6 +9,6 @@ Go to web browser and open http://localhost:3000 to view the home page of 'yelp-
 
 I'm uploading some images to  show it how my website looks as of right now(9/6/21)
 <img src="images/image-1.png" width="500"><br>
-<img src="images/image-2.png" width="500"><br>
+<img src="images/image-2.png" width="500"><br> //There is a problem in the '/campgrounds' page whwere a single image is shown for every campground. This bug will be resolved at a later date.
 <img src="images/image-3.png" width="500"><br> 
 <img src="images/image-4.png" width="500"><br>
