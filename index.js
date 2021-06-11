@@ -31,6 +31,14 @@ app.engine('ejs', ejsMate);
 
 
 //----------------------------------------------------------------------------//
+//Async function utility
+function wrapAsync(func) {
+    return function (req, res, next) {
+        func(req, res, next).catch(e => next(e));
+    }
+}
+
+//----------------------------------------------------------------------------//
 
 
 app.get('/', (req, res) => {
@@ -46,54 +54,47 @@ app.get('/campgrounds', async (req, res) => {
 app.get('/campgrounds/new', (req, res) => {
     res.render('campgrounds/new');
 })
-app.post('/campgrounds', async (req, res) => {
+app.post('/campgrounds', wrapAsync(async (req, res) => {
     const newCampground = new Campground(req.body.campground);
-    await newCampground.save()
-        .then(() => {
-            console.log('Operation successful saheb!');
-        })
-        .catch(e => {
-            console.log('Galtiya ha, saheb!');
-            console.log(e);
-        })
+    await newCampground.save();
     res.redirect(`campgrounds/${newCampground._id}`);
 
-})
+}))
 
 //Show page to view a particular campground
-app.get('/campgrounds/:id', async (req, res) => {
+app.get('/campgrounds/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     const foundCamp = await Campground.findById(id);
     res.render('campgrounds/show', { foundCamp });
-})
+}))
 
 //edit page to edit a particular campground
-app.get('/campgrounds/:id/edit', async (req, res) => {
+app.get('/campgrounds/:id/edit', wrapAsync(async (req, res) => {
     const { id } = req.params;
     const editCamp = await Campground.findById(id);
-    // .then(() => {
-    //     console.log('Found campground and editting');
-    //     res.render('campgrounds/edit', { campedit });
-    // })
-    // .catch(e => {
-    //     console.log(`Error found: ${e}`);
-    //     res.render('campgrounds/error', { e });
-    // })
     res.render('campgrounds/edit', { editCamp });
-})
+}))
 //patch route to update the query
-app.patch('/campgrounds/:id', async (req, res) => {
+app.patch('/campgrounds/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground }, { new: true });
     res.redirect(`/campgrounds/${campground._id}`);
-})
+}))
 
 
 //Delete route to delete campgrounds
-app.delete('/campgrounds/:id', async (req, res) => {
+app.delete('/campgrounds/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
+}))
+
+
+
+//----------------------------------------------------------------------------//
+//Basic error handler middlewares
+app.use((err, req, res, next) => {
+    res.send('<center><h1>Oh boy! Something went wrong...</h1></center>');
 })
 
 
