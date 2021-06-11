@@ -4,35 +4,46 @@
         <h1 class="text-center">Create your own campground!</h1>
         <div class="col-6 offset-3">
             <div class="mb-3">
-                <form action="/campgrounds/<%=editCamp._id%>?_method=PATCH" method="POST">
+                <form action="/campgrounds/<%=editCamp._id%>?_method=PATCH" method="POST" novalidate
+                    class="needs-validation">
                     <div class="mb-3">
                         <label class="form-label" for="title">Title: </label>
                         <input class="form-control" type="text" name="campground[title]" value="<%=editCamp.title%>"
-                            id="title">
+                            id="title" required>
+                        <div class="valid-feedback">Looks Good!</div>
+                        <div class="invalid-feedback">Title cannot be empty</div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="price">Price: </label>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="price-label">€</span>
                             <input type="number" class="form-control" name="campground[price]" placeholder="0.00"
-                                value="<%= editCamp.price %>" aria-label="price" aria-describedby="price-label">
+                                value="<%= editCamp.price %>" aria-label="price" aria-describedby="price-label"
+                                required>
+                            <div class="valid-feedback">Looks Good!</div>
+                            <div class="invalid-feedback">Free campground... maybe I should visit sometime...</div>
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <label for="image" class="form-label">Image URL: </label>
                         <input class="form-control" type="text" name="campground[image]" id="image"
-                            value="<%= editCamp.image %>">
+                            value="<%= editCamp.image %>" required>
+                        <div class="valid-feedback">Looks Good!</div>
+                        <div class="invalid-feedback">Images make the difference</div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="description">Description: </label>
                         <textarea class="form-control" name="campground[description]" id="description" cols="30"
                             rows="5"><%= editCamp.description %> </textarea>
+                        <div class="valid-feedback">Looks Good!</div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="location">Location: </label>
                         <input class="form-control" type="text" name="campground[location]"
-                            value="<%= editCamp.location %>" id="location">
+                            value="<%= editCamp.location %>" id="location" required>
+                        <div class="valid-feedback">Looks Good!</div>
+                        <div class="invalid-feedback">A campground needs a ground... just saying.</div>
                     </div>
                     <button class="btn btn-info">Save Changes</button>
                 </form>
