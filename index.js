@@ -4,6 +4,8 @@ const path = require('path');
 const Campground = require('./models/campground');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
+const wrapAsync = require('./utilities/WrapAsync');
+const expressError = require('./utilities/ExpressError');
 
 //connecting to mongoose database 
 mongoose.connect('mongodb://localhost:27017/yelp-camp',
@@ -31,24 +33,16 @@ app.engine('ejs', ejsMate);
 
 
 //----------------------------------------------------------------------------//
-//Async function utility
-function wrapAsync(func) {
-    return function (req, res, next) {
-        func(req, res, next).catch(e => next(e));
-    }
-}
-
-//----------------------------------------------------------------------------//
-
+//Express Routes
 
 app.get('/', (req, res) => {
     res.render('home');
 })
 // Index page to see all campgrounds
-app.get('/campgrounds', async (req, res) => {
+app.get('/campgrounds', wrapAsync(async (req, res) => {
     const campgrounds = await Campground.find({});
     res.render('campgrounds/index', { campgrounds });
-})
+}))
 
 //To create new campground
 app.get('/campgrounds/new', (req, res) => {
