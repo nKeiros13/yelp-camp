@@ -1,13 +1,18 @@
+//Node packages
 const express = require('express');
 const mongoose = require('mongoose');
-const path = require('path');
-const Campground = require('./models/campground');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
+const path = require('path');
+const Joi = require('joi');
+//Models
+const Campground = require('./models/campground');
+const Review = require('./models/review');
+//Utilities
 const wrapAsync = require('./utilities/WrapAsync');
 const expressError = require('./utilities/ExpressError');
-const Joi = require('joi');
-const { campgroundSchema } = require('./JoiSchemas');
+//Joi Schemas for validation
+const { campgroundSchema, reviewSchema } = require('./JoiSchemas');
 
 //connecting to mongoose database 
 mongoose.connect('mongodb://localhost:27017/yelp-camp',
@@ -35,8 +40,19 @@ app.engine('ejs', ejsMate);
 
 
 const validateCampground = (req, res, next) => {
-    //Joi Validation
+    //Joi Validation for campgrounds
     const { error } = campgroundSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',');
+        throw new expressError(400, msg)
+    } else {
+        next();
+    }
+}
+
+const validateReview = (req, res, next) => {
+    //Joi Validation for reviews
+    const { error } = reviewSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',');
         throw new expressError(400, msg)
@@ -62,6 +78,7 @@ app.get('/campgrounds', wrapAsync(async (req, res) => {
 app.get('/campgrounds/new', (req, res) => {
     res.render('campgrounds/new');
 })
+
 app.post('/campgrounds', validateCampground, wrapAsync(async (req, res) => {
     if (!req.body.campground) {
         throw new expressError(400, 'Invalid Campground Data');
@@ -103,6 +120,17 @@ app.delete('/campgrounds/:id', wrapAsync(async (req, res) => {
     res.redirect('/campgrounds');
 }))
 
+
+//-----------------------------------------------------------------------------//
+//POST Route for Reviews
+app.post('/campgrounds/:id/reviews', wrapAsync(async (req, res) => {
+    const campground = await Campground.findById(req.params.id);
+    const review = new Review(req.body.review);
+    campground.reviews.push(review);
+    await review.save();
+    await campground.save();
+    res.redirect(`/campgrounds/${campground._id}`);
+}))
 
 
 //----------------------------------------------------------------------------//

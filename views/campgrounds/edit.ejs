@@ -5,7 +5,7 @@
         <div class="col-6 offset-3">
             <div class="mb-3">
                 <form action="/campgrounds/<%=editCamp._id%>?_method=PATCH" method="POST" novalidate
-                    class="needs-validation">
+                    class="mb-3 needs-validation">
                     <div class="mb-3">
                         <label class="form-label" for="title">Title: </label>
                         <input class="form-control" type="text" name="campground[title]" value="<%=editCamp.title%>"
@@ -45,12 +45,12 @@
                         <div class="valid-feedback">Looks Good!</div>
                         <div class="invalid-feedback">A campground needs a ground... just saying.</div>
                     </div>
-                    <button class="btn btn-info">Save Changes</button>
+                    <button class="btn btn-info btn-sm">Save Changes</button>
                 </form>
             </div>
             <div class="mb-3">
-                <a href="/campgrounds/<%= editCamp._id %>"><button class="btn btn-secondary">Back to <%= editCamp.title
-                            %> </button></a>
+                <a href="/campgrounds/<%= editCamp._id %>"><button class="btn btn-secondary btn-sm">Back to <%=
+                            editCamp.title %> </button></a>
             </div>
         </div>
     </div>

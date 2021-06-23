@@ -19,11 +19,27 @@
                     <li class="list-group-item">Price: €<%= foundCamp.price %>/night</li>
                 </ul>
                 <div class="card-body">
-                    <a href="/campgrounds/<%= foundCamp._id %>/edit" class="card-link btn btn-info">Edit Campground</a>
+                    <a href="/campgrounds/<%= foundCamp._id %>/edit" class="card-link btn btn-info btn-sm">Edit
+                        Campground</a>
                     <form class="d-inline" action="/campgrounds/<%=foundCamp._id%>?_method=DELETE" method="POST">
-                        <button class="btn btn-danger">Delete!</button>
+                        <button class="btn btn-danger btn-sm">Delete!</button>
                     </form>
                 </div>
             </div>
+            <h5>Leave a Review</h5>
+            <form action="/campgrounds/<%= foundCamp._id %>/reviews" method="POST" class="mb-3 needs-validation"
+                novalidate>
+                <div class="mb-3">
+                    <label for="rating" class="form-label">Rating:</label>
+                    <input type="range" class="form-range" min="1" max="10" name="review[rating]" id="rating">
+                </div>
+                <div class="mb-3">
+                    <label for="reviewBody" class="form-label">Review:</label>
+                    <textarea name="review[body]" class="form-control" id="reviewBody" cols="30" rows="5"
+                        required></textarea>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <button class="btn btn-success btn-sm">Submit Review</button>
+            </form>
         </div>
     </div>
