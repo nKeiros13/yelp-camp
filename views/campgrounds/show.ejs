@@ -3,32 +3,31 @@
     <div class="row mb-3">
         <div class="col-6 offset-3">
             <div class="card">
-                <img src="<%= foundCamp.image %>" class="card-img-top" alt="...">
+                <img src="<%= camp.image %>" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">
-                        <%= foundCamp.title %>
+                        <%= camp.title %>
                     </h5>
                     <p class="card-text">
-                        <%= foundCamp.description %>
+                        <%= camp.description %>
                     </p>
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item text-muted">It's located in: <strong>
-                            <%= foundCamp.location %>
+                            <%= camp.location %>
                     </li>
-                    <li class="list-group-item">Price: €<%= foundCamp.price %>/night</li>
+                    <li class="list-group-item">Price: €<%= camp.price %>/night</li>
                 </ul>
                 <div class="card-body">
-                    <a href="/campgrounds/<%= foundCamp._id %>/edit" class="card-link btn btn-info btn-sm">Edit
+                    <a href="/campgrounds/<%= camp._id %>/edit" class="card-link btn btn-info btn-sm">Edit
                         Campground</a>
-                    <form class="d-inline" action="/campgrounds/<%=foundCamp._id%>?_method=DELETE" method="POST">
+                    <form class="d-inline" action="/campgrounds/<%=camp._id%>?_method=DELETE" method="POST">
                         <button class="btn btn-danger btn-sm">Delete!</button>
                     </form>
                 </div>
             </div>
             <h5>Leave a Review</h5>
-            <form action="/campgrounds/<%= foundCamp._id %>/reviews" method="POST" class="mb-3 needs-validation"
-                novalidate>
+            <form action="/campgrounds/<%= camp._id %>/reviews" method="POST" class="mb-3 needs-validation" novalidate>
                 <div class="mb-3">
                     <label for="rating" class="form-label">Rating:</label>
                     <input type="range" class="form-range" min="1" max="10" name="review[rating]" id="rating">
@@ -41,5 +40,12 @@
                 </div>
                 <button class="btn btn-success btn-sm">Submit Review</button>
             </form>
+            <% for(let review of camp.reviews) { %>
+                <div class="mb-3">
+                    <p>Rating: <%= review.rating %>/10 </p>
+                    <p>Review: <%= review.body %>
+                    </p>
+                </div>
+                <% } %>
         </div>
     </div>

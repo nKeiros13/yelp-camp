@@ -92,8 +92,8 @@ app.post('/campgrounds', validateCampground, wrapAsync(async (req, res) => {
 //Show page to view a particular campground
 app.get('/campgrounds/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const foundCamp = await Campground.findById(id);
-    res.render('campgrounds/show', { foundCamp });
+    const camp = await Campground.findById(id).populate('reviews');
+    res.render('campgrounds/show', { camp });
 }))
 
 //edit page to edit a particular campground
