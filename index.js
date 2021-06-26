@@ -131,7 +131,13 @@ app.post('/campgrounds/:id/reviews', wrapAsync(async (req, res) => {
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
 }))
-
+//DELETE Route for Reviews
+app.delete('/campgrounds/:campID/reviews/:reviewID', wrapAsync(async (req, res) => {
+    const { campID, reviewID } = req.params;
+    Campground.findByIdAndUpdate(campID, { $pull: { reviews: reviewID } });
+    await Review.findByIdAndDelete(reviewID);
+    res.redirect(`/campgrounds/${campID}`);
+}))
 
 //----------------------------------------------------------------------------//
 //To catch all possible routes which doesnt match the above routes
