@@ -58,7 +58,13 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
-
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.del = req.flash('delete');
+    res.locals.edit = req.flash('edit');
+    res.locals.error = req.flash('error');
+    next();
+})
 
 app.use('/campgrounds', campgrounds);
 app.use('/campgrounds/:campID/reviews', reviews);
