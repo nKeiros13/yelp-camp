@@ -4,19 +4,17 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const path = require('path');
-//Models
-const Campground = require('./models/campground');
-const Review = require('./models/review');
+
 //Utilities
 const wrapAsync = require('./utilities/WrapAsync');
 const expressError = require('./utilities/ExpressError');
 //Joi Schemas for validation
-const { campgroundSchema, reviewSchema } = require('./JoiSchemas');
 
 const campgrounds = require('./routes/campground');
 const reviews = require('./routes/review');
 
-
+const session = require('express-session');
+const flash = require('connect-flash');
 
 
 //connecting to mongoose database 
@@ -47,16 +45,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-const validateReview = (req, res, next) => {
-    //Joi Validation for reviews
-    const { error } = reviewSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new expressError(400, msg)
-    } else {
-        next();
+const sessionConfig = {
+    secret: "Pleasedontcopymysecret!",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
+app.use(session(sessionConfig));
+app.use(flash());
+
 
 
 app.use('/campgrounds', campgrounds);
