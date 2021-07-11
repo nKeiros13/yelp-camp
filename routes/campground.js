@@ -52,13 +52,16 @@ router.post('/', validateCampground, wrapAsync(async (req, res) => {
     await newCampground.save();
     req.flash('success', 'Successfully created a new campground!');
     res.redirect(`campgrounds/${newCampground._id}`);
-
 }))
 
 //Show page to view a particular campground
 router.get('/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     const camp = await Campground.findById(id).populate('reviews');
+    if (!camp) {
+        req.flash('error', "Can't find your campground");
+        res.redirect('/campgrounds');
+    }
     res.render('campgrounds/show', { camp });
 }))
 
@@ -66,6 +69,10 @@ router.get('/:id', wrapAsync(async (req, res) => {
 router.get('/:id/edit', wrapAsync(async (req, res) => {
     const { id } = req.params;
     const editCamp = await Campground.findById(id);
+    if (!editCamp) {
+        req.flash('error', "Can't edit something which can't be found. Sorry!");
+        res.redirect('/campgrounds');
+    }
     res.render('campgrounds/edit', { editCamp });
 }))
 //patch route to update the query

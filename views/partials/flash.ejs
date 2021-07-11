@@ -1,18 +1,17 @@
 <% if(success && success.length!==0) { %>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <%= success %>
-    </div>
-    <% } %>
-
-        <% if(del && del.length!==0) { %>
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <%= del %>
-
-            </div>
-            <% } %>
-                <% if(edit && edit.length!==0) { %>
-                    <div class="alert alert-info alert-dismissible fade show" role="alert">
-                        <%= del %>
-
-                    </div>
-                    <% } %>
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <%= success %>
+</div>
+<% } %> <% if(del && del.length!==0) { %>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <%= del %>
+</div>
+<% } %> <% if(edit && edit.length!==0) { %>
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+  <%= edit %>
+</div>
+<% } %> <% if(error && error.length!==0) { %>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <%= error %>
+</div>
+<% } %>
