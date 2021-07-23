@@ -1,34 +1,29 @@
 <% layout('layouts/boilerplate') %>
-    <h2>All Campgrounds are Here!</h2>
-    <ul>
-        <% for (let campground of campgrounds) { %>
-            <div class="card" mb-3>
-                <div class="row">
-                    <div class="col-md-4">
-                        <img src="<%=campground.image %>" alt="" class="img-fluid">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <%= campground.title %>
-                            </h5>
-                            <p class="card-body">
-                                <%=campground.description %>
-                            </p>
-                            <p class="card-text">
-                                <small class="text-muted">
-                                    <%= campground.location %>
-                                </small>
-                            </p>
-                            <a href="/campgrounds/<%=campground._id %> " class="btn btn-primary">View
-                                <%=campground.title %>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <% } %>
+<h2>All Campgrounds are Here!</h2>
+<ul>
+  <% for (let campground of campgrounds) { %>
+  <div class="card" mb-3>
+    <div class="row">
+      <div class="col-md-4">
+        <img src="<%=campground.image %>" alt="" class="img-fluid" />
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title"><%= campground.title %></h5>
+          <p class="card-body"><%=campground.description %></p>
+          <p class="card-text">
+            <small class="text-muted"> <%= campground.location %> </small>
+          </p>
+          <a href="/campgrounds/<%=campground._id %> " class="btn btn-primary"
+            >View <%=campground.title %>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
 
-                <hr>
-                If you wanna create a campground, click this link
-                <a href="/campgrounds/new"><i>Add New Campground</i></a>
+  <hr />
+  If you wanna create a campground, click this link
+  <a href="/campgrounds/new"><i>Add New Campground</i></a>
+</ul>
