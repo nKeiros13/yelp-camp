@@ -1,121 +1,58 @@
 //THIS FILE IS DEDICATED SOLELY TOWARDS CAMPGROUND ROUTES.//
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
 //MIDDLEWARE
-const { isLoggedIn } = require("../middleware/isLoggedIn");
+const {
+	isLoggedIn,
+	isAuthor,
+	validateCampground,
+} = require("../middleware/middleware");
 
-//MODELS REQD.
-const Campground = require("../models/campground");
+//CONTROLLERS
+const campgrounds = require("../controllers/campground");
 
 //Utilities
 const wrapAsync = require("../utilities/WrapAsync");
-const expressError = require("../utilities/ExpressError");
+//------------------------------------------------------------------------------------//
 
-//SCHEMAS FOR VALIDATION
-const { campgroundSchema } = require("../JoiSchemas");
+// ROUTE TO SHOW THE INDEX AND TO CREATE A NEW CAMPGROUND
 
-// VALIDATE MIDDLEWARE
-
-const validateCampground = (req, res, next) => {
-	//Joi Validation for campgrounds
-	const { error } = campgroundSchema.validate(req.body);
-	if (error) {
-		const msg = error.details.map((el) => el.message).join(",");
-		throw new expressError(400, msg);
-	} else {
-		next();
-	}
-};
-
-// Index page to see all campgrounds
-router.get(
-	"/",
-	wrapAsync(async (req, res) => {
-		const campgrounds = await Campground.find({});
-		res.render("campgrounds/index", { campgrounds });
-	})
-);
-
+router
+	.route("/")
+	.get(wrapAsync(campgrounds.getIndex))
+	// .post(
+	// 	validateCampground,
+	// 	isLoggedIn,
+	// 	wrapAsync(campgrounds.createNewCampground)
+	// );
+	.post(upload.array("image"), (req, res) => {
+		console.log(req.body, req.files);
+		res.send("Working?");
+	});
 //To create new campground
-router.get("/new", isLoggedIn, (req, res) => {
-	console.log("Req.User -- ", req.user);
-	res.render("campgrounds/new");
-});
+router.get("/new", isLoggedIn, campgrounds.renderNewForm);
 
-router.post(
-	"/",
-	validateCampground,
-	isLoggedIn,
-	wrapAsync(async (req, res) => {
-		if (!req.body.campground) {
-			throw new expressError(400, "Invalid Campground Data");
-		}
-		const newCampground = new Campground(req.body.campground);
-		await newCampground.save();
-		req.flash("success", "Successfully created a new campground!");
-		res.redirect(`campgrounds/${newCampground._id}`);
-	})
-);
-
-//Show page to view a particular campground
-router.get(
-	"/:id",
-	wrapAsync(async (req, res) => {
-		const { id } = req.params;
-		const camp = await Campground.findById(id).populate("reviews");
-		if (!camp) {
-			req.flash("error", "Can't find your campground");
-			res.redirect("/campgrounds");
-		}
-		res.render("campgrounds/show", { camp });
-	})
-);
+//ROUTE TO SHOW CAMPGROUND, EDIT A CAMPGROUND AND DELETE A CAMPGROUND
+router
+	.route("/:id")
+	.get(wrapAsync(campgrounds.showCampground))
+	.patch(
+		validateCampground,
+		isAuthor,
+		isLoggedIn,
+		wrapAsync(campgrounds.editCampground)
+	)
+	.delete(isLoggedIn, isAuthor, wrapAsync(campgrounds.deleteCampground));
 
 //edit page to edit a particular campground
 router.get(
 	"/:id/edit",
 	isLoggedIn,
-	wrapAsync(async (req, res) => {
-		const { id } = req.params;
-		const editCamp = await Campground.findById(id);
-		if (!editCamp) {
-			req.flash("error", "Can't edit something which can't be found. Sorry!");
-			res.redirect("/campgrounds");
-		}
-		res.render("campgrounds/edit", { editCamp });
-	})
-);
-//patch route to update the query
-router.patch(
-	"/:id",
-	validateCampground,
-	isLoggedIn,
-	wrapAsync(async (req, res) => {
-		if (!req.body.campground) {
-			throw new expressError(400, "Invalid Campground Error");
-		}
-		const { id } = req.params;
-		const campground = await Campground.findByIdAndUpdate(
-			id,
-			{ ...req.body.campground },
-			{ new: true }
-		);
-		req.flash("edit", "Successfully updated the campground");
-		res.redirect(`/campgrounds/${campground._id}`);
-	})
-);
-
-//Delete route to delete campgrounds
-router.delete(
-	"/:id",
-	isLoggedIn,
-	wrapAsync(async (req, res) => {
-		const { id } = req.params;
-		await Campground.findByIdAndDelete(id);
-		req.flash("delete", "Successfully deleted the campground!");
-		res.redirect("/campgrounds");
-	})
+	isAuthor,
+	wrapAsync(campgrounds.renderEditForm)
 );
 
 module.exports = router;
