@@ -2,7 +2,8 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const { storage } = require("../cloudinary");
+const upload = multer({ storage });
 
 //MIDDLEWARE
 const {
@@ -23,15 +24,12 @@ const wrapAsync = require("../utilities/WrapAsync");
 router
 	.route("/")
 	.get(wrapAsync(campgrounds.getIndex))
-	// .post(
-	// 	validateCampground,
-	// 	isLoggedIn,
-	// 	wrapAsync(campgrounds.createNewCampground)
-	// );
-	.post(upload.array("image"), (req, res) => {
-		console.log(req.body, req.files);
-		res.send("Working?");
-	});
+	.post(
+		isLoggedIn,
+		upload.array("image"),
+		validateCampground,
+		wrapAsync(campgrounds.createNewCampground)
+	);
 //To create new campground
 router.get("/new", isLoggedIn, campgrounds.renderNewForm);
 
@@ -40,9 +38,10 @@ router
 	.route("/:id")
 	.get(wrapAsync(campgrounds.showCampground))
 	.patch(
-		validateCampground,
-		isAuthor,
 		isLoggedIn,
+		isAuthor,
+		upload.array("image"),
+		validateCampground,
 		wrapAsync(campgrounds.editCampground)
 	)
 	.delete(isLoggedIn, isAuthor, wrapAsync(campgrounds.deleteCampground));

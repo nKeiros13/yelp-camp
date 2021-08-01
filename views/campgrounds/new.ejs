@@ -58,7 +58,8 @@
 					<div class="invalid-feedback">
 						A good image brings lot of customers!
 					</div> -->
-					<input type="file" name="image" id="image" multiple />
+
+					<!-- <input type="file" name="image" id="image" multiple /> -->
 				</div>
 				<div class="mb-3">
 					<label class="form-label" for="description">Description: </label>
@@ -83,6 +84,16 @@
 					<div class="invalid-feedback">
 						You know, without location nobody can find your campground, right?
 					</div>
+				</div>
+				<div class="mb-3">
+					<label for="image" class="form-label">Upload your Images!</label>
+					<input
+						class="form-control"
+						type="file"
+						id="image"
+						name="image"
+						multiple
+					/>
 				</div>
 				<button class="btn btn-success">Add Campground</button>
 			</form>
